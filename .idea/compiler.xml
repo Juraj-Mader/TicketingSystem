@@ -6,26 +6,15 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="inventoryservice" />
-      </profile>
-      <profile name="Annotation profile for ticketing-system" enabled="true">
-        <sourceOutputDir name="target/generated-sources/annotations" />
-        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
-        <outputRelativeToContentRoot value="true" />
-        <processorPath useClasspath="false">
-          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.46/lombok-1.18.46.jar" />
-        </processorPath>
-        <module name="bookingservice" />
+        <module name="booking-service" />
+        <module name="inventory-service" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name=".idea" target="1.5" />
-    </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
-      <module name="bookingservice" options="-parameters" />
-      <module name="inventoryservice" options="-parameters" />
+      <module name="booking-service" options="-parameters" />
+      <module name="inventory-service" options="-parameters" />
     </option>
   </component>
 </project>

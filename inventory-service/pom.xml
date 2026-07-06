@@ -10,7 +10,7 @@
         <version>1.0.0</version>
     </parent>
 
-    <artifactId>booking-service</artifactId>
+    <artifactId>inventory-service</artifactId>
     <name>Booking Service</name>
     <description>Handles ticket booking operations</description>
 
@@ -35,7 +35,6 @@
             <groupId>org.flywaydb</groupId>
             <artifactId>flyway-mysql</artifactId>
         </dependency>
-
         <dependency>
             <groupId>com.mysql</groupId>
             <artifactId>mysql-connector-j</artifactId>
