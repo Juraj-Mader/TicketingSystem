@@ -20,7 +20,9 @@ public class BookingService {
     public BookingResponse createBooking(final BookingRequest request) {
 
         Customer customer = customerRepository.findById(request.getUserId())
-                .orElseThrow(() -> new RuntimeException("Customer not found"));
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+
 
         return BookingResponse.builder().build();
 
