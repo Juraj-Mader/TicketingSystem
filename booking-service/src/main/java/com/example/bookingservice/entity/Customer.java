@@ -1,4 +1,4 @@
-package com.example.bookingservice.Entity;
+package com.example.bookingservice.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
