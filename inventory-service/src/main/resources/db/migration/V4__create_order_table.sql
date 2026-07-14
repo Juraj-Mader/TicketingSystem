@@ -5,6 +5,12 @@ CREATE TABLE `order` (
     placed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     customer_id BIGINT NOT NULL,
     event_id BIGINT NOT NULL,
-    CONSTRAINT fk_order_customer FOREIGN KEY (customer_id) REFERENCES customer(id) ON DELETE SET NULL,
-    CONSTRAINT fk_order_event FOREIGN KEY (event_id) REFERENCES event(id) ON DELETE SET NULL
+
+    CONSTRAINT fk_order_customer
+        FOREIGN KEY (customer_id)
+        REFERENCES customer(id),
+
+    CONSTRAINT fk_order_event
+        FOREIGN KEY (event_id)
+        REFERENCES event(id)
 );
