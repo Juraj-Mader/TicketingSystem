@@ -5,6 +5,8 @@ import com.example.bookingservice.entity.Customer;
 import com.example.bookingservice.repository.CustomerRepository;
 import com.example.bookingservice.request.BookingRequest;
 import com.example.bookingservice.response.BookingResponse;
+import com.example.bookingservice.response.EventInventoryResponse;
+import com.example.bookingservice.response.InventoryResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,13 +14,13 @@ import org.springframework.stereotype.Service;
 public class BookingService {
 
     private final CustomerRepository customerRepository;
-    private final InventoryServiceClient inventoryService;
+    private final InventoryServiceClient inventoryServiceClient;
 
     @Autowired
     public BookingService(final CustomerRepository customerRepository,
-                          final InventoryServiceClient inventoryService) {
+                          final InventoryServiceClient inventoryServiceClient) {
         this.customerRepository = customerRepository;
-        this.inventoryService = inventoryService;
+        this.inventoryServiceClient = inventoryServiceClient;
     }
 
     public BookingResponse createBooking(final BookingRequest request) {
@@ -26,9 +28,16 @@ public class BookingService {
         Customer customer = customerRepository.findById(request.getUserId())
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
+        final EventInventoryResponse inventoryResponse =
+                inventoryServiceClient.getInventory(request.getEventId());
 
+        System.out.println("Inventory service response: " + inventoryResponse);
 
-        return BookingResponse.builder().build();
-
+        return BookingResponse.builder()
+                .userId(customer.getId())
+                .eventId(inventoryResponse.getEventId())
+                .ticketCount(request.getTicketCount())
+                .ticketPrice(inventoryResponse.getTicketPrice())
+                .build();
     }
 }

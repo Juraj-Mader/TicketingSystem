@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
 public class Customer {
 
     @Id
-    private Long Id;
+    private Long id;
     private String name;
     private String email;
     private String address;

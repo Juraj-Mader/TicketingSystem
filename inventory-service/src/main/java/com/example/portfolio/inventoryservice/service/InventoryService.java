@@ -35,7 +35,8 @@ public class InventoryService {
     }
 
     public VenueInventoryResponse getVenueInformation(final Long venueId) {
-        final Venue venue = venueRepository.findById(venueId).orElse(null);
+        final Venue venue = venueRepository.findById(venueId)
+                .orElseThrow(() -> new RuntimeException("Venue not found: " + venueId));
 
         return VenueInventoryResponse.builder()
                 .venueId(venue.getId())
@@ -45,7 +46,9 @@ public class InventoryService {
     }
 
     public EventInventoryResponse getEventInventory(final Long eventId) {
-        final Event event = eventRepository.findById(eventId).orElse(null);
+
+        final Event event = eventRepository.findById(eventId)
+                .orElseThrow(() -> new RuntimeException("Event not found: " + eventId));
 
         return EventInventoryResponse.builder()
                 .eventId(event.getId())

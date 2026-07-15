@@ -1,12 +1,25 @@
 package com.example.bookingservice.client;
 
+import com.example.bookingservice.response.EventInventoryResponse;
+import com.example.bookingservice.response.InventoryResponse;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 @Service
 public class InventoryServiceClient {
 
-    public InventoryResponse getInventory(final Long eventId) {
+    @Value("${inventory.service.url}")
+    private String inventoryServiceUrl;
+    public InventoryServiceClient() {
+
+    }
+
+    public EventInventoryResponse getInventory(final Long eventId) {
         final RestTemplate restTemplate = new RestTemplate();
+        return restTemplate.getForObject(
+                inventoryServiceUrl + "/event/" + eventId,
+                EventInventoryResponse.class
+        );
     }
 }
