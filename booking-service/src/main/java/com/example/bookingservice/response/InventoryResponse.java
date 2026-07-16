@@ -12,7 +12,6 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @Builder
 public class InventoryResponse {
-
     private Long eventId;
     private String event;
     private Long capacity;

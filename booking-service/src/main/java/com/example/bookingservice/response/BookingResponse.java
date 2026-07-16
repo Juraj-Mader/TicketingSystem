@@ -12,9 +12,8 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @Builder
 public class BookingResponse {
-    private Long bookingId;
     private Long userId;
     private Long eventId;
     private Long ticketCount;
-    private BigDecimal ticketPrice;
+    private BigDecimal totalPrice;
 }
