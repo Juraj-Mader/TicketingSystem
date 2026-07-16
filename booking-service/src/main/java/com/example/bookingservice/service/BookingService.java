@@ -32,7 +32,9 @@ public class BookingService {
                 inventoryServiceClient.getInventory(request.getEventId());
 
         System.out.println("Inventory service response: " + inventoryResponse);
-
+        if (customer == null) {
+            throw new RuntimeException("User not found");
+        }
         return BookingResponse.builder()
                 .userId(customer.getId())
                 .eventId(inventoryResponse.getEventId())
