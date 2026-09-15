@@ -1,7 +1,6 @@
 package com.example.bookingservice.client;
 
 import com.example.bookingservice.response.EventInventoryResponse;
-import com.example.bookingservice.response.InventoryResponse;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
