@@ -23,7 +23,7 @@ public class OrderService {
         this.inventoryServiceClient = inventoryServiceClient;
     }
 
-    @KafkaListener(topics = "booking", groupId = "order-service")
+    @KafkaListener(topics = "booking-events", groupId = "order-service")
     public void orderEvent(BookingEvent bookingEvent) {
         log.info("Order Event received: {}", bookingEvent);
 
