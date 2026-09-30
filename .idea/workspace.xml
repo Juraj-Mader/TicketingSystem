@@ -5,7 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ec53e954-c002-4ef6-bf96-e8b4d84361c7" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -48,30 +50,31 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Application.OrderServiceApplication.executor&quot;: &quot;Run&quot;,
-    &quot;Application.bookingservice.executor&quot;: &quot;Run&quot;,
-    &quot;Application.inventoryservice.executor&quot;: &quot;Run&quot;,
-    &quot;Application.orderservice.executor&quot;: &quot;Run&quot;,
-    &quot;Maven.ticketing-system [clean].executor&quot;: &quot;Run&quot;,
-    &quot;Maven.ticketing-system [dependency:tree,-pl...].executor&quot;: &quot;Run&quot;,
-    &quot;Maven.ticketing-system [install].executor&quot;: &quot;Run&quot;,
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;terminal&quot;,
-    &quot;to.speed.mode.migration.done&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.OrderServiceApplication.executor": "Run",
+    "Application.bookingservice.executor": "Run",
+    "Application.inventoryservice.executor": "Run",
+    "Application.orderservice.executor": "Run",
+    "Maven.ticketing-system [clean].executor": "Run",
+    "Maven.ticketing-system [dependency:tree,-pl...].executor": "Run",
+    "Maven.ticketing-system [install].executor": "Run",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "master",
+    "ignore.virus.scanning.warn.message": "true",
+    "junie.onboarding.icon.badge.shown": "true",
+    "kotlin-language-version-configured": "true",
+    "onboarding.tips.debug.path": "C:/Users/juraj/Downloads/apigateway/apigateway/src/main/java/com/portfolio/Main.java",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "terminal",
+    "to.speed.mode.migration.done": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\juraj\IdeaProjects\TicketingSystem" />
@@ -85,7 +88,16 @@
       <command value="mvn    dependency:tree -pl booking-service" />
     </option>
   </component>
-  <component name="RunManager" selected="Application.orderservice">
+  <component name="RunManager" selected="Application.bookingservice">
+    <configuration name="apigateway" type="Application" factoryName="Application">
+      <option name="ALTERNATIVE_JRE_PATH" value="graalvm-jdk-21" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
+      <option name="MAIN_CLASS_NAME" value="com.example.apigateway.ApigatewayApplication" />
+      <module name="apigateway" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="bookingservice" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="com.bookingservice.BookingServiceApplication" />
       <module name="booking-service" />
@@ -108,6 +120,7 @@
       </method>
     </configuration>
     <list>
+      <item itemvalue="Application.apigateway" />
       <item itemvalue="Application.bookingservice" />
       <item itemvalue="Application.inventoryservice" />
       <item itemvalue="Application.orderservice" />
@@ -140,5 +153,16 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$USER_HOME$/Downloads/apigateway/apigateway/src/main/java/com/portfolio/Main.java</url>
+          <line>13</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>
