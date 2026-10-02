@@ -1,0 +1,19 @@
+# Build
+target/
+build/
+
+# IntelliJ
+.idea/
+*.iml
+*.iws
+*.ipr
+
+# VS Code
+.vscode/
+
+# Env / secrets
+.env
+
+# OS
+.DS_Store
+Thumbs.db
