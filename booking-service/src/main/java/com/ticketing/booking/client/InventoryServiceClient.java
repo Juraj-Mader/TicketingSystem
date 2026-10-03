@@ -1,6 +1,6 @@
-package com.bookingservice.client;
+package com.ticketing.booking.client;
 
-import com.bookingservice.response.EventInventoryResponse;
+import com.ticketing.booking.response.EventInventoryResponse;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;

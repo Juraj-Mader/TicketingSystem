@@ -1,4 +1,4 @@
-package com.bookingservice.request;
+package com.ticketing.booking.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,9 +11,10 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class BookingRequest {
-    private Long userId;
+public class InventoryResponse {
     private Long eventId;
-    private Long ticketCount;
-    private BigDecimal totalPrice;
+    private String event;
+    private Long capacity;
+    private VenueResponse venue;
+    private BigDecimal ticketPrice;
 }

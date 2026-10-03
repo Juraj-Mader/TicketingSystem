@@ -1,12 +1,12 @@
-package com.bookingservice.service;
+package com.ticketing.booking.service;
 
-import com.bookingservice.client.InventoryServiceClient;
-import com.bookingservice.entity.Customer;
-import com.bookingservice.event.BookingEvent;
-import com.bookingservice.repository.CustomerRepository;
-import com.bookingservice.request.BookingRequest;
-import com.bookingservice.response.BookingResponse;
-import com.bookingservice.response.EventInventoryResponse;
+import com.ticketing.booking.client.InventoryServiceClient;
+import com.ticketing.booking.entity.Customer;
+import com.ticketing.booking.event.BookingEvent;
+import com.ticketing.booking.repository.CustomerRepository;
+import com.ticketing.booking.request.BookingRequest;
+import com.ticketing.booking.response.BookingResponse;
+import com.ticketing.booking.response.EventInventoryResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;

@@ -1,9 +1,9 @@
-package com.bookingservice.controller;
+package com.ticketing.booking.controller;
 
 
-import com.bookingservice.request.BookingRequest;
-import com.bookingservice.response.BookingResponse;
-import com.bookingservice.service.BookingService;
+import com.ticketing.booking.request.BookingRequest;
+import com.ticketing.booking.response.BookingResponse;
+import com.ticketing.booking.service.BookingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

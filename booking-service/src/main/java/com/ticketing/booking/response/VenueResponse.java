@@ -1,4 +1,4 @@
-package com.bookingservice.response;
+package com.ticketing.booking.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
