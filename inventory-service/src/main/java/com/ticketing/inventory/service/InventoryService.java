@@ -1,11 +1,11 @@
-package com.portfolio.inventoryservice.service;
+package com.ticketing.inventory.service;
 
-import com.portfolio.inventoryservice.entity.Event;
-import com.portfolio.inventoryservice.entity.Venue;
-import com.portfolio.inventoryservice.repository.EventRepository;
-import com.portfolio.inventoryservice.repository.VenueRepository;
-import com.portfolio.inventoryservice.response.EventInventoryResponse;
-import com.portfolio.inventoryservice.response.VenueInventoryResponse;
+import com.ticketing.inventory.entity.Event;
+import com.ticketing.inventory.entity.Venue;
+import com.ticketing.inventory.repository.EventRepository;
+import com.ticketing.inventory.repository.VenueRepository;
+import com.ticketing.inventory.response.EventInventoryResponse;
+import com.ticketing.inventory.response.VenueInventoryResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

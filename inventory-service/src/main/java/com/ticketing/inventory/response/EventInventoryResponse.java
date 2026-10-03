@@ -1,6 +1,6 @@
-package com.portfolio.inventoryservice.response;
+package com.ticketing.inventory.response;
 
-import com.portfolio.inventoryservice.entity.Venue;
+import com.ticketing.inventory.entity.Venue;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

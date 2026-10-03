@@ -1,4 +1,4 @@
-package com.portfolio.inventoryservice.response;
+package com.ticketing.inventory.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

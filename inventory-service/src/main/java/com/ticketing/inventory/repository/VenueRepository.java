@@ -1,6 +1,6 @@
-package com.portfolio.inventoryservice.repository;
+package com.ticketing.inventory.repository;
 
-import com.portfolio.inventoryservice.entity.Venue;
+import com.ticketing.inventory.entity.Venue;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
