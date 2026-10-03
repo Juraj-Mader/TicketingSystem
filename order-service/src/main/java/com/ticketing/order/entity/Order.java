@@ -1,4 +1,4 @@
-package com.order_service.entity;
+package com.ticketing.order.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

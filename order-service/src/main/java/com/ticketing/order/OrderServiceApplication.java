@@ -1,4 +1,4 @@
-package com.order_service;
+package com.ticketing.order;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

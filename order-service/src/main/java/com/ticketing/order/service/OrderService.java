@@ -1,9 +1,9 @@
-package com.order_service.service;
+package com.ticketing.order.service;
 
-import com.example.bookingservice.event.BookingEvent;
-import com.order_service.client.InventoryServiceClient;
-import com.order_service.entity.Order;
-import com.order_service.repository.OrderRepository;
+import com.ticketing.order.event.BookingEvent;
+import com.ticketing.order.client.InventoryServiceClient;
+import com.ticketing.order.entity.Order;
+import com.ticketing.order.repository.OrderRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
