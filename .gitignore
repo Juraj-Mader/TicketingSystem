@@ -20,3 +20,6 @@ Thumbs.db
 
 # Spring Initializr leftovers
 HELP.md
+
+# Docker volume data
+volume-data/
