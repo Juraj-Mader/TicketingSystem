@@ -18,7 +18,16 @@ spring:
               uri: ${INVENTORY_SERVICE_URL:http://localhost:8080}
               predicates:
                 - Path=/api/v1/inventory/**
-
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8091/realms/ticketing-security-realm
+keycloak:
+    auth:
+      jwk:
+        set:
+          uri: http://localhost:8091/realms/ticketing-security-realm/protocol/openid-connect/certs
 management:
   endpoints:
     web:
