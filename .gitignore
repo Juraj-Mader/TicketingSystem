@@ -23,3 +23,10 @@ HELP.md
 
 # Docker volume data
 volume-data/
+
+# Logs
+*.log
+logs/
+
+# IntelliJ build output
+out/
