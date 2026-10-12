@@ -13,6 +13,11 @@ spring:
               uri: ${BOOKING_SERVICE_URL:http://localhost:8081}
               predicates:
                 - Path=/api/v1/booking/**
+              filters:
+                - name: CircuitBreaker
+                  args:
+                    id: bookingServiceCircuitBreaker
+                    fallbackUri: forward:/fallbackRoute
 
             - id: inventory-service
               uri: ${INVENTORY_SERVICE_URL:http://localhost:8080}
@@ -28,8 +33,39 @@ keycloak:
       jwk:
         set:
           uri: http://localhost:8091/realms/ticketing-security-realm/protocol/openid-connect/certs
+
+# Actuator
 management:
+  health:
+    circuitbreakers:
+      enabled: true
   endpoints:
     web:
       exposure:
         include: health, info, gateway
+  endpoint:
+    health:
+      show-details: always
+
+# Resilience4j
+resilience4j:
+  circuitbreaker:
+    configs:
+      default:
+        registerHealthIndicator: true
+        slidingWindowType: COUNT_BASED
+        slidingWindowSize: 8
+        failureRateThreshold: 50
+        minimum-number-of-calls: 4
+        waitDurationInOpenState: 5s
+        permittedNumberOfCallsInHalfOpenState: 2
+        automaticTransitionFromOpenToHalfOpenEnabled: true
+  timelimiter:
+    configs:
+      default:
+        timeout-duration: 3s
+  retry:
+    configs:
+      default:
+        max-attempts: 3
+        wait-duration: 2s
