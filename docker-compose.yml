@@ -14,6 +14,7 @@ services:
 
   zookeeper:
     image: confluentinc/cp-zookeeper:7.5.0
+    restart: unless-stopped
     hostname: zookeeper
     container_name: zookeeper
     ports:
@@ -24,6 +25,7 @@ services:
 
   kafka-broker:
     image: confluentinc/cp-kafka:7.5.0
+    restart: unless-stopped
     container_name: kafka-broker
     ports:
       - "9092:9092"
@@ -39,6 +41,7 @@ services:
 
   kafka-ui:
     container_name: KAFKA-UI
+    restart: unless-stopped
     image: provectuslabs/kafka-ui:latest
     ports:
       - "8084:8080"
@@ -52,6 +55,7 @@ services:
 
   kafka-schema-registry:
     image: confluentinc/cp-schema-registry:7.5.0
+    restart: unless-stopped
     container_name: kafka-schema-registry
     hostname: kafka-schema-registry
     depends_on:
