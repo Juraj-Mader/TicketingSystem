@@ -1,14 +1,25 @@
+# API Gateway – single entry point for all client requests
 server:
   port: 8090
+
+# ---------- Logging ----------
+logging:
+  level:
+    root: INFO
+    com.ticketing: DEBUG
+    org.springframework.cloud.gateway: DEBUG   # Shows which route matched each request
 
 spring:
   application:
     name: api-gateway
+
+  # ---------- Routing ----------
   cloud:
     gateway:
       server:
         webmvc:
           routes:
+            # Booking service: protected by a circuit breaker
             - id: booking-service
               uri: ${BOOKING_SERVICE_URL:http://localhost:8081}
               predicates:
@@ -19,22 +30,27 @@ spring:
                     id: bookingServiceCircuitBreaker
                     fallbackUri: forward:/fallbackRoute
 
+            # Inventory service: plain forwarding
             - id: inventory-service
               uri: ${INVENTORY_SERVICE_URL:http://localhost:8080}
               predicates:
                 - Path=/api/v1/inventory/**
+
+  # ---------- Security (Keycloak) ----------
   security:
     oauth2:
       resourceserver:
         jwt:
           issuer-uri: http://localhost:8091/realms/ticketing-security-realm
-keycloak:
-    auth:
-      jwk:
-        set:
-          uri: http://localhost:8091/realms/ticketing-security-realm/protocol/openid-connect/certs
 
-# Actuator
+# Custom property: only used if read in code via @Value("${keycloak.auth.jwk.set.uri}")
+keycloak:
+  auth:
+    jwk:
+      set:
+        uri: http://localhost:8091/realms/ticketing-security-realm/protocol/openid-connect/certs
+
+# ---------- Actuator (monitoring endpoints) ----------
 management:
   health:
     circuitbreakers:
@@ -42,28 +58,34 @@ management:
   endpoints:
     web:
       exposure:
-        include: health, info, gateway, circuitbreakers
+        include: health, info, gateway, circuitbreakers   # Endpoints available over HTTP
   endpoint:
     health:
-      show-details: always
+      show-details: always       # ! Show full health details !
 
-# Resilience4j
+# ---------- Resilience4j (fault tolerance) ----------
 resilience4j:
+
+  # Circuit breaker: stops sending requests to a failing service
   circuitbreaker:
     configs:
       default:
         registerHealthIndicator: true
-        slidingWindowType: COUNT_BASED
-        slidingWindowSize: 8
-        failureRateThreshold: 50
+        slidingWindowType: COUNT_BASED                      # Measure failures over the last N calls
+        slidingWindowSize: 8                                # N = 8 calls
+        failureRateThreshold: 50                            # Open the circuit when 50% or more fail
         minimum-number-of-calls: 4
-        waitDurationInOpenState: 5s
+        waitDurationInOpenState: 5s                         # Stay OPEN 5s (calls go to the fallback)
         permittedNumberOfCallsInHalfOpenState: 2
-        automaticTransitionFromOpenToHalfOpenEnabled: true
+        automaticTransitionFromOpenToHalfOpenEnabled: true  # Move to HALF_OPEN automatically after 5s
+
+  # Time limiter: fail a call that takes too long
   timelimiter:
     configs:
       default:
-        timeout-duration: 3s
+        timeout-duration: 3s     # No response in 3s counts as a failure (goes to the fallback)
+
+  # Retry: try a failed call again before giving up
   retry:
     configs:
       default:
