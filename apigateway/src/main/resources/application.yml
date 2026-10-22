@@ -91,3 +91,20 @@ resilience4j:
       default:
         max-attempts: 3
         wait-duration: 2s
+
+# ---------- OpenAPI / Swagger UI (aggregated) ----------
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    urls:
+      - name: Inventory Service
+        url: /docs/inventoryservice/v3/api-docs
+      - name: Booking Service
+        url: /docs/bookingservice/v3/api-docs
+
+# ---------- Public URLs (no JWT needed) ----------
+security:
+  excluded:
+    urls: "/swagger-ui.html, /swagger-ui/**, /docs/**, /v3/api-docs/**, /swagger-resources/**, /api-docs/**"
