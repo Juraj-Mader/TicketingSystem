@@ -71,6 +71,9 @@ API docs.
 
 - Keycloak admin console: http://localhost:8091 (admin / admin)
 - Realm: `ticketing-security-realm`
+- Grant type: Client Credentials 
+- client ID: `ticketing-client-id`
+  (the secret is in the realm file).
 
 The realm is imported automatically on the first start of the Keycloak container from
 `docker/keycloak/realms/ticketing-security-realm.json`. In Postman, use
