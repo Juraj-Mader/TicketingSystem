@@ -72,8 +72,8 @@ API docs.
 - Keycloak admin console: http://localhost:8091 (admin / admin)
 - Realm: `ticketing-security-realm`
 
-The realm is not exported to this repository yet, so it has to be created manually in the admin
-console together with a client that can issue tokens. In Postman, use
+The realm is imported automatically on the first start of the Keycloak container from
+`docker/keycloak/realms/ticketing-security-realm.json`. In Postman, use
 Authorization > OAuth 2.0 > Get New Access Token with the token URL
 `http://localhost:8091/realms/ticketing-security-realm/protocol/openid-connect/token`.
 
