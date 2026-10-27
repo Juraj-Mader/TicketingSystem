@@ -3,6 +3,8 @@ package com.ticketing.booking.service;
 import com.ticketing.booking.client.InventoryServiceClient;
 import com.ticketing.booking.entity.Customer;
 import com.ticketing.booking.event.BookingEvent;
+import com.ticketing.booking.exception.NotEnoughTicketsException;
+import com.ticketing.booking.exception.ResourceNotFoundException;
 import com.ticketing.booking.repository.CustomerRepository;
 import com.ticketing.booking.request.BookingRequest;
 import com.ticketing.booking.response.BookingResponse;
@@ -32,13 +34,16 @@ public class BookingService {
     }
     public BookingResponse createBooking(final BookingRequest request) {
         Customer customer = customerRepository.findById(request.getUserId())
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Customer not found: " + request.getUserId()));
 
         final EventInventoryResponse inventoryResponse =
                 inventoryServiceClient.getInventory(request.getEventId());
         log.info("Inventory Response: {}", inventoryResponse);
         if (inventoryResponse.getCapacity() < request.getTicketCount()) {
-            throw new RuntimeException("Not enough inventory");
+            throw new NotEnoughTicketsException(
+                    "Not enough tickets for event " + request.getEventId()
+                            + ": requested " + request.getTicketCount()
+                            + ", available " + inventoryResponse.getCapacity());
         }
 
         final BookingEvent bookingEvent = createBookingEvent(request, customer, inventoryResponse);
