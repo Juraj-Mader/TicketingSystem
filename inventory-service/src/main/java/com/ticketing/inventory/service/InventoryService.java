@@ -2,6 +2,7 @@ package com.ticketing.inventory.service;
 
 import com.ticketing.inventory.entity.Event;
 import com.ticketing.inventory.entity.Venue;
+import com.ticketing.inventory.exception.ResourceNotFoundException;
 import com.ticketing.inventory.repository.EventRepository;
 import com.ticketing.inventory.repository.VenueRepository;
 import com.ticketing.inventory.response.EventInventoryResponse;
@@ -38,7 +39,7 @@ public class InventoryService {
 
     public VenueInventoryResponse getVenueInformation(final Long venueId) {
         final Venue venue = venueRepository.findById(venueId)
-                .orElseThrow(() -> new RuntimeException("Venue not found: " + venueId));
+                .orElseThrow(() -> new ResourceNotFoundException("Venue not found: " + venueId));
 
         return VenueInventoryResponse.builder()
                 .venueId(venue.getId())
@@ -50,7 +51,7 @@ public class InventoryService {
     public EventInventoryResponse getEventInventory(final Long eventId) {
 
         final Event event = eventRepository.findById(eventId)
-                .orElseThrow(() -> new RuntimeException("Event not found: " + eventId));
+                .orElseThrow(() -> new ResourceNotFoundException("Event not found: " + eventId));
 
         return EventInventoryResponse.builder()
                 .eventId(event.getId())
@@ -63,7 +64,8 @@ public class InventoryService {
 
     public void updateEventCapacity(final Long eventId,
                                     final Long ticketsBooked) {
-        final Event event = eventRepository.findById(eventId).orElse(null);
+        final Event event = eventRepository.findById(eventId)
+                .orElseThrow(() -> new ResourceNotFoundException("Event not found: " + eventId));
         event.setLeftCapacity(event.getLeftCapacity() - ticketsBooked);
         eventRepository.saveAndFlush(event);
         log.info("Updated event capacity for event id: {} with tickets booked: {}", eventId, ticketsBooked);
