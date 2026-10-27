@@ -14,4 +14,18 @@ public class GlobalExceptionHandler {
         problem.setTitle("Resource not found");
         return problem;
     }
+
+    @ExceptionHandler(NotEnoughTicketsException.class)
+    public ProblemDetail handleNotEnoughTickets(NotEnoughTicketsException ex) {
+        ProblemDetail problem = ProblemDetail.forStatusAndDetail(HttpStatus.CONFLICT, ex.getMessage());
+        problem.setTitle("Not enough tickets");
+        return problem;
+    }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ProblemDetail handleBadArgument(IllegalArgumentException ex) {
+        ProblemDetail problem = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, ex.getMessage());
+        problem.setTitle("Invalid request");
+        return problem;
+    }
 }

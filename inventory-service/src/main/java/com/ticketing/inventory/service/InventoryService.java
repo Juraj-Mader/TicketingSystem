@@ -2,11 +2,13 @@ package com.ticketing.inventory.service;
 
 import com.ticketing.inventory.entity.Event;
 import com.ticketing.inventory.entity.Venue;
+import com.ticketing.inventory.exception.NotEnoughTicketsException;
 import com.ticketing.inventory.exception.ResourceNotFoundException;
 import com.ticketing.inventory.repository.EventRepository;
 import com.ticketing.inventory.repository.VenueRepository;
 import com.ticketing.inventory.response.EventInventoryResponse;
 import com.ticketing.inventory.response.VenueInventoryResponse;
+import org.springframework.transaction.annotation.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -62,12 +64,20 @@ public class InventoryService {
                 .build();
     }
 
-    public void updateEventCapacity(final Long eventId,
-                                    final Long ticketsBooked) {
-        final Event event = eventRepository.findById(eventId)
-                .orElseThrow(() -> new ResourceNotFoundException("Event not found: " + eventId));
-        event.setLeftCapacity(event.getLeftCapacity() - ticketsBooked);
-        eventRepository.saveAndFlush(event);
+    @Transactional
+    public void updateEventCapacity(final Long eventId, final Long ticketsBooked) {
+        if (ticketsBooked <= 0) {
+            throw new IllegalArgumentException("Tickets booked must be greater than 0");
+        }
+        if (!eventRepository.existsById(eventId)) {
+            throw new ResourceNotFoundException("Event not found: " + eventId);
+        }
+
+        int updatedRows = eventRepository.decreaseCapacity(eventId, ticketsBooked);
+        if (updatedRows == 0) {
+            throw new NotEnoughTicketsException(
+                    "Not enough tickets for event " + eventId + ": requested " + ticketsBooked);
+        }
         log.info("Updated event capacity for event id: {} with tickets booked: {}", eventId, ticketsBooked);
     }
 }
