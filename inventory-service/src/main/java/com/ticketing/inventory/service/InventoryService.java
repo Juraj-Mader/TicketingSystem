@@ -80,4 +80,20 @@ public class InventoryService {
         }
         log.info("Updated event capacity for event id: {} with tickets booked: {}", eventId, ticketsBooked);
     }
+
+    @Transactional
+    public void updateVenueCapacity(final Long venueId, final Long venueCapacity) {
+        if (venueCapacity <= 0) {
+            throw new IllegalArgumentException("Venue capacity must be greater than 0");
+        }
+
+        final Venue venue = venueRepository.findById(venueId)
+                .orElseThrow(() -> new ResourceNotFoundException("Venue not found: " + venueId));
+
+        venue.setTotalCapacity(venueCapacity);
+
+        venueRepository.save(venue);
+
+        log.info("Updated capacity for venue id: {} to {}", venueId, venueCapacity);
+    }
 }

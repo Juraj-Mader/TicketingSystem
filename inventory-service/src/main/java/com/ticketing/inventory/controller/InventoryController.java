@@ -43,4 +43,11 @@ public class InventoryController {
         inventoryService.updateEventCapacity(eventId, ticketsBooked);
         return ResponseEntity.ok().build();
     }
+
+    @PutMapping("/inventory/venue/{venueId}/capacity/{capacity}")
+    public ResponseEntity<Void> updateVenueCapacity(@PathVariable("venueId") Long venueId,
+                                                    @PathVariable("capacity") Long venueCapacity) {
+        inventoryService.updateVenueCapacity(venueId, venueCapacity);
+        return ResponseEntity.ok().build();
+    }
 }
