@@ -85,7 +85,7 @@ Then start the services from the IDE in this order:
 
 1. inventory-service (Flyway creates the tables and the sample data)
 2. booking-service
-3. order-service
+3. order-service 
 4. apigateway
 
 ### Sample data
@@ -180,8 +180,13 @@ The circuit breaker appears in the health response after the first request to th
 The inventory and booking services have unit tests with JUnit 5 and Mockito. They don't need
 Docker:
 
+Linux / macOS (bash):
 ```bash
 ./mvnw test -Dtest='*ServiceTest' -Dsurefire.failIfNoSpecifiedTests=false
+```
+Windows (PowerShell):
+```powershell
+.\mvnw test "-Dtest=*ServiceTest" "-Dsurefire.failIfNoSpecifiedTests=false"
 ```
 
 ## Other local tools
