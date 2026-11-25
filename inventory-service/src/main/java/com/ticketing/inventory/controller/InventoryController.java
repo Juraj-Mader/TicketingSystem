@@ -15,7 +15,7 @@ import java.util.List;
 public class InventoryController {
 
 
-    private InventoryService inventoryService;
+    private final InventoryService inventoryService;
 
     @Autowired
     public InventoryController(InventoryService inventoryService) {
@@ -23,12 +23,12 @@ public class InventoryController {
     }
 
     @GetMapping("/inventory/events")
-    public @ResponseBody List<EventInventoryResponse> inventoryGetAllEvents() {
+    public List<EventInventoryResponse> inventoryGetAllEvents() {
         return inventoryService.getAllEvents();
     }
 
     @GetMapping("/inventory/venue/{venueId}")
-    public @ResponseBody VenueInventoryResponse inventoryByVenueId(@PathVariable("venueId") Long venueId){
+    public VenueInventoryResponse inventoryByVenueId(@PathVariable("venueId") Long venueId){
         return inventoryService.getVenueInformation(venueId);
     }
 

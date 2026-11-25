@@ -17,6 +17,7 @@ import java.math.BigDecimal;
 public class Event {
 
     @Id
+    @Column(name = "id")
     private Long id;
 
     @Column(name = "name")
