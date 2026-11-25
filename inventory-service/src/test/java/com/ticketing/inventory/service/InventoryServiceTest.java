@@ -2,6 +2,7 @@ package com.ticketing.inventory.service;
 
 import com.ticketing.inventory.entity.Event;
 import com.ticketing.inventory.entity.Venue;
+import com.ticketing.inventory.exception.CapacityConflictException;
 import com.ticketing.inventory.exception.NotEnoughTicketsException;
 import com.ticketing.inventory.exception.ResourceNotFoundException;
 import com.ticketing.inventory.repository.EventRepository;
@@ -12,6 +13,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import static org.mockito.ArgumentMatchers.any;
 
 import java.math.BigDecimal;
 import java.util.Optional;
@@ -100,5 +102,47 @@ class InventoryServiceTest {
                 .isInstanceOf(IllegalArgumentException.class);
 
         verify(eventRepository, never()).decreaseCapacity(anyLong(), anyLong());
+    }
+
+    // updateVenueCapacity
+
+    @Test
+    void updateVenueCapacity_valid_savesNewCapacity() {
+        Venue venue = new Venue(1L, "Stadion Tehelne Pole", "Bratislava", 22500L);
+        when(venueRepository.findById(1L)).thenReturn(Optional.of(venue));
+        when(eventRepository.existsByVenue_IdAndTotalCapacityGreaterThan(1L, 30000L)).thenReturn(false);
+
+        inventoryService.updateVenueCapacity(1L, 30000L);
+
+        assertThat(venue.getTotalCapacity()).isEqualTo(30000L);
+        verify(venueRepository).save(venue);
+    }
+
+    @Test
+    void updateVenueCapacity_smallerThanEvent_throwsConflict() {
+        Venue venue = new Venue(1L, "Stadion Tehelne Pole", "Bratislava", 22500L);
+        when(venueRepository.findById(1L)).thenReturn(Optional.of(venue));
+        when(eventRepository.existsByVenue_IdAndTotalCapacityGreaterThan(1L, 100L)).thenReturn(true);
+
+        assertThatThrownBy(() -> inventoryService.updateVenueCapacity(1L, 100L))
+                .isInstanceOf(CapacityConflictException.class);
+
+        verify(venueRepository, never()).save(any());
+    }
+
+    @Test
+    void updateVenueCapacity_venueMissing_throwsNotFound() {
+        when(venueRepository.findById(99L)).thenReturn(Optional.empty());
+
+        assertThatThrownBy(() -> inventoryService.updateVenueCapacity(99L, 30000L))
+                .isInstanceOf(ResourceNotFoundException.class);
+    }
+
+    @Test
+    void updateVenueCapacity_zero_throwsBadRequest() {
+        assertThatThrownBy(() -> inventoryService.updateVenueCapacity(1L, 0L))
+                .isInstanceOf(IllegalArgumentException.class);
+
+        verify(venueRepository, never()).save(any());
     }
 }

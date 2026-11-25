@@ -28,4 +28,11 @@ public class GlobalExceptionHandler {
         problem.setTitle("Invalid request");
         return problem;
     }
+
+    @ExceptionHandler(CapacityConflictException.class)
+    public ProblemDetail handleCapacityConflict(CapacityConflictException ex) {
+        ProblemDetail problem = ProblemDetail.forStatusAndDetail(HttpStatus.CONFLICT, ex.getMessage());
+        problem.setTitle("Capacity conflict");
+        return problem;
+    }
 }

@@ -2,6 +2,7 @@ package com.ticketing.inventory.service;
 
 import com.ticketing.inventory.entity.Event;
 import com.ticketing.inventory.entity.Venue;
+import com.ticketing.inventory.exception.CapacityConflictException;
 import com.ticketing.inventory.exception.NotEnoughTicketsException;
 import com.ticketing.inventory.exception.ResourceNotFoundException;
 import com.ticketing.inventory.repository.EventRepository;
@@ -92,8 +93,12 @@ public class InventoryService {
         final Venue venue = venueRepository.findById(venueId)
                 .orElseThrow(() -> new ResourceNotFoundException("Venue not found: " + venueId));
 
-        venue.setTotalCapacity(venueCapacity);
+        if (eventRepository.existsByVenue_IdAndTotalCapacityGreaterThan(venueId, venueCapacity)) {
+            throw new CapacityConflictException(
+                    "Venue " + venueId + " has an event with more than " + venueCapacity + " seats");
+        }
 
+        venue.setTotalCapacity(venueCapacity);
         venueRepository.save(venue);
 
         log.info("Updated capacity for venue id: {} to {}", venueId, venueCapacity);

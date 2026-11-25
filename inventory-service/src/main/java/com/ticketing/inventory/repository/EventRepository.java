@@ -14,4 +14,5 @@ public interface EventRepository extends JpaRepository<Event, Long> {
     @Query("UPDATE Event e SET e.leftCapacity = e.leftCapacity - :tickets " +
             "WHERE e.id = :eventId AND e.leftCapacity >= :tickets")
     int decreaseCapacity(@Param("eventId") Long eventId, @Param("tickets") Long tickets);
+    boolean existsByVenue_IdAndTotalCapacityGreaterThan(Long venueId, Long capacity);
 }
