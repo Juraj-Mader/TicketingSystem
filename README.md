@@ -1,8 +1,10 @@
 # Ticketing System
+
 ![CI](https://github.com/Juraj-Mader/TicketingSystem/actions/workflows/ci.yml/badge.svg)
+
 Backend for booking event tickets, split into Spring Boot microservices. I built it to practice
-service-to-service communication with REST and Kafka, securing an API gateway with Keycloak, and
-running the infrastructure with Docker Compose.
+service-to-service communication with REST and Kafka, securing an API gateway with Keycloak, testing
+with Testcontainers, and running the whole system with Docker Compose.
 
 ## How it works
 
@@ -47,8 +49,9 @@ Client --> API Gateway :8090
 - Spring Security OAuth2 Resource Server, Keycloak
 - Bean Validation, `ProblemDetail` error responses
 - springdoc-openapi (Swagger UI)
-- JUnit 5, Mockito, AssertJ
-- Docker Compose, Lombok
+- JUnit 5, Mockito, AssertJ, Spring MockMvc, Testcontainers
+- Docker, Docker Compose, GitHub Actions
+- Lombok
 
 ## Features
 
@@ -63,16 +66,19 @@ Client --> API Gateway :8090
 | Request validation       | `@Valid` with `@NotNull` and `@Positive` on the booking request            |
 | Database migrations      | Flyway creates the tables and inserts sample data on startup              |
 | API documentation        | Swagger UI per service and aggregated in the gateway                       |
+| Automated tests and CI   | unit, controller and Testcontainers tests run on every push                |
 
 ## Running locally
 
 You need JDK 21 and Docker Desktop.
 
-Start the infrastructure (MySQL, ZooKeeper, Kafka, Kafka UI, Schema Registry, Keycloak with its
-own MySQL database):
+### Option 1: services in the IDE
+
+Start only the infrastructure (MySQL, ZooKeeper, Kafka, Kafka UI, Schema Registry, Keycloak with
+its own MySQL database):
 
 ```bash
-docker compose up -d
+docker compose up -d mysql zookeeper kafka-broker kafka-ui kafka-schema-registry keycloak-db keycloak
 ```
 
 Wait until Keycloak has started and imported the realm:
@@ -85,7 +91,7 @@ Then start the services from the IDE in this order:
 
 1. inventory-service (Flyway creates the tables and the sample data)
 2. booking-service
-3. order-service 
+3. order-service
 4. apigateway
 
 ### Sample data
@@ -143,6 +149,7 @@ All requests go through the gateway on port 8090.
 | GET    | `/api/v1/inventory/event/{eventId}`               | one event with capacity, price |
 | GET    | `/api/v1/inventory/venue/{venueId}`               | venue details                  |
 | PUT    | `/api/v1/inventory/event/{eventId}/capacity/{n}`  | lower the capacity by n        |
+| PUT    | `/api/v1/inventory/venue/{venueId}/capacity/{n}`  | set the venue capacity to n    |
 | POST   | `/api/v1/booking`                                 | create a booking               |
 
 Example booking request:
@@ -161,10 +168,10 @@ Errors are returned as `ProblemDetail` JSON:
 
 | Status | When                                                        |
 |--------|-------------------------------------------------------------|
-| 400    | invalid request, e.g. missing `eventId` or `ticketCount` ≤ 0 |
+| 400    | invalid request, e.g. missing `eventId`, `ticketCount` ≤ 0 or capacity ≤ 0 |
 | 401    | missing or invalid JWT                                      |
 | 404    | customer, event or venue not found                          |
-| 409    | not enough tickets                                          |
+| 409    | not enough tickets, or venue capacity smaller than one of its events |
 | 503    | inventory service not reachable, or booking service down (circuit breaker fallback) |
 
 ## API documentation
@@ -212,6 +219,7 @@ Windows (PowerShell):
 ```powershell
 .\mvnw test "-Dtest=*ServiceTest" "-Dsurefire.failIfNoSpecifiedTests=false"
 ```
+
 ## Other local tools
 
 | Tool                      | URL                                     |
