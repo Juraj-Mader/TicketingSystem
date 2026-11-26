@@ -98,6 +98,16 @@ Flyway inserts this data, so you can book tickets right away:
 | event    | 1  | BMTH Concert, 22,000 tickets, 99.99 per ticket  |
 | customer | 1  | Jozko Mrkvicka                                  |
 
+### Option 2: everything in Docker
+
+Builds the four services from source and starts them together with the infrastructure:
+
+```bash
+docker compose up -d --build
+```
+
+The first build takes a few minutes. Stop the services in the IDE first, they use the same ports.
+
 ## Authentication
 
 Every request through the gateway needs a bearer token from Keycloak, except the Swagger UI and
@@ -227,6 +237,6 @@ Windows (PowerShell):
 - [x] Flyway migrations, validation, global error handling
 - [x] Unit tests for inventory and booking services
 - [x] Unit tests for the order service and controller tests
-- [ ] Dockerfiles for all services
+- [x] Dockerfiles for all services
 - [x] CI pipeline with GitHub Actions
 - [x] Integration tests with Testcontainers

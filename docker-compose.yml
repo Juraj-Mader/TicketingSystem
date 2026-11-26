@@ -11,6 +11,11 @@ services:
     volumes:
       - db-data:/var/lib/mysql
       - db-logs:/var/log/mysql
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-ppassword" ]
+      interval: 5s
+      timeout: 5s
+      retries: 20
 
   zookeeper:
     image: confluentinc/cp-zookeeper:7.5.0
@@ -103,6 +108,83 @@ services:
     depends_on:
       keycloak-db:
         condition: service_healthy
+
+  # Application services
+
+  inventory-service:
+    build:
+      context: .
+      args:
+        MODULE: inventory-service
+    container_name: inventory-service
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/ticketing
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+  booking-service:
+    build:
+      context: .
+      args:
+        MODULE: booking-service
+    container_name: booking-service
+    restart: unless-stopped
+    ports:
+      - "8081:8081"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/ticketing
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka-broker:29092
+      INVENTORY_SERVICE_URL: http://inventory-service:8080/api/v1/inventory
+    depends_on:
+      mysql:
+        condition: service_healthy
+      kafka-broker:
+        condition: service_started
+      inventory-service:
+        condition: service_started
+
+  order-service:
+    build:
+      context: .
+      args:
+        MODULE: order-service
+    container_name: order-service
+    restart: unless-stopped
+    ports:
+      - "8082:8082"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/ticketing
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka-broker:29092
+      INVENTORY_SERVICE_URL: http://inventory-service:8080/api/v1/inventory
+    depends_on:
+      mysql:
+        condition: service_healthy
+      kafka-broker:
+        condition: service_started
+      inventory-service:
+        condition: service_started
+
+  api-gateway:
+    build:
+      context: .
+      args:
+        MODULE: apigateway
+    container_name: api-gateway
+    restart: unless-stopped
+    ports:
+      - "8090:8090"
+    environment:
+      BOOKING_SERVICE_URL: http://booking-service:8081
+      INVENTORY_SERVICE_URL: http://inventory-service:8080
+      KEYCLOAK_AUTH_JWK_SET_URI: http://keycloak:8080/realms/ticketing-security-realm/protocol/openid-connect/certs
+    depends_on:
+      - keycloak
+      - booking-service
+      - inventory-service
 
 volumes:
   db-data:
