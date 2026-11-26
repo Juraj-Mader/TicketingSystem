@@ -179,7 +179,7 @@ The circuit breaker appears in the health response after the first request to th
 
 | Type        | Where             | What it covers                                              | Needs Docker |
 |-------------|-------------------|-------------------------------------------------------------|--------------|
-| Unit        | inventory, booking | service logic with JUnit 5 and Mockito                     | no           |
+| Unit        | inventory, booking, order | service logic with JUnit 5 and Mockito                     | no           |
 | Integration | inventory         | real MySQL via Testcontainers, Flyway migrations, queries   | yes          |
 
 The integration tests also run 30 bookings in parallel against the same event to check that
