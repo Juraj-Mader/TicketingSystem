@@ -177,8 +177,21 @@ The circuit breaker appears in the health response after the first request to th
 
 ## Tests
 
-The inventory and booking services have unit tests with JUnit 5 and Mockito. They don't need
-Docker:
+| Type        | Where             | What it covers                                              | Needs Docker |
+|-------------|-------------------|-------------------------------------------------------------|--------------|
+| Unit        | inventory, booking | service logic with JUnit 5 and Mockito                     | no           |
+| Integration | inventory         | real MySQL via Testcontainers, Flyway migrations, queries   | yes          |
+
+The integration tests also run 30 bookings in parallel against the same event to check that
+the capacity update never oversells.
+
+Run all tests (Docker Desktop must be running, the rest of the stack does not):
+
+```bash
+./mvnw clean test
+```
+
+Run only the unit tests:
 
 Linux / macOS (bash):
 ```bash
@@ -188,7 +201,6 @@ Windows (PowerShell):
 ```powershell
 .\mvnw test "-Dtest=*ServiceTest" "-Dsurefire.failIfNoSpecifiedTests=false"
 ```
-
 ## Other local tools
 
 | Tool                      | URL                                     |
@@ -216,4 +228,4 @@ Windows (PowerShell):
 - [ ] Unit tests for the order service and controller tests
 - [ ] Dockerfiles for all services
 - [ ] CI pipeline with GitHub Actions
-- [ ] Integration tests with Testcontainers
+- [x] Integration tests with Testcontainers
