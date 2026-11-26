@@ -1,4 +1,13 @@
+# docker compose up -d --build
+#       -> infrastructure + all four services built from source
+#
+# docker compose up -d mysql zookeeper kafka-broker kafka-ui kafka-schema-registry keycloak-db keycloak
+#       -> infrastructure only (run the services from the IDE)
+
 services:
+  # Infrastructure
+
+  # Main database for inventory, booking and order (tables are created by Flyway)
   mysql:
     image: mysql:8.3.0
     container_name: mysql
@@ -11,12 +20,14 @@ services:
     volumes:
       - db-data:/var/lib/mysql
       - db-logs:/var/log/mysql
+    # Services wait for this check, so they only start once MySQL accepts connections
     healthcheck:
       test: [ "CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-ppassword" ]
       interval: 5s
       timeout: 5s
       retries: 20
 
+  # Kafka needs ZooKeeper to manage the broker
   zookeeper:
     image: confluentinc/cp-zookeeper:7.5.0
     restart: unless-stopped
@@ -28,6 +39,7 @@ services:
       ZOOKEEPER_CLIENT_PORT: 2181
       ZOOKEEPER_TICK_TIME: 3000
 
+  # Message broker for the booking-events topic (booking -> order)
   kafka-broker:
     image: confluentinc/cp-kafka:7.5.0
     restart: unless-stopped
@@ -41,9 +53,11 @@ services:
       KAFKA_BROKER_ID: 1
       KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      # Two listeners: 29092 for other containers, 9092 for services started from the IDE
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka-broker:29092,PLAINTEXT_HOST://localhost:9092
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
 
+  # Web UI to browse topics and messages: http://localhost:8084
   kafka-ui:
     container_name: KAFKA-UI
     restart: unless-stopped
@@ -58,6 +72,7 @@ services:
       DYNAMIC_CONFIG_ENABLED: 'true'
 
 
+  # Schema Registry (not used by the code yet, kept for future Avro schemas)
   kafka-schema-registry:
     image: confluentinc/cp-schema-registry:7.5.0
     restart: unless-stopped
@@ -72,6 +87,7 @@ services:
       SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS: 'kafka-broker:29092'
       SCHEMA_REGISTRY_LISTENERS: http://kafka-schema-registry:8081
 
+  # Separate database for Keycloak (users, clients, realm settings)
   keycloak-db:
     container_name: keycloak-mysql
     image: mysql:8.3.0
@@ -89,9 +105,11 @@ services:
       timeout: 5s
       retries: 20
 
+  # Identity provider that issues the JWT tokens: http://localhost:8091 (admin / admin)
   keycloak:
     container_name: keycloak
     image: quay.io/keycloak/keycloak:24.0.1
+    # --import-realm loads the realm from docker/keycloak/realms on the first start
     command: [ "start-dev", "--import-realm" ]
     restart: unless-stopped
     environment:
@@ -110,6 +128,9 @@ services:
         condition: service_healthy
 
   # Application services
+
+  # All four are built from the same Dockerfile; MODULE picks the Maven module.
+  # The environment variables override the localhost values in application.properties.
 
   inventory-service:
     build:
@@ -168,6 +189,7 @@ services:
       inventory-service:
         condition: service_started
 
+  # Single entry point for clients: http://localhost:8090
   api-gateway:
     build:
       context: .
@@ -180,6 +202,7 @@ services:
     environment:
       BOOKING_SERVICE_URL: http://booking-service:8081
       INVENTORY_SERVICE_URL: http://inventory-service:8080
+      # Inside Docker, Keycloak listens on 8080 (8091 is only the local port)
       KEYCLOAK_AUTH_JWK_SET_URI: http://keycloak:8080/realms/ticketing-security-realm/protocol/openid-connect/certs
     depends_on:
       - keycloak
