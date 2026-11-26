@@ -181,6 +181,7 @@ The circuit breaker appears in the health response after the first request to th
 |-------------|-------------------|-------------------------------------------------------------|--------------|
 | Unit        | inventory, booking, order | service logic with JUnit 5 and Mockito                     | no           |
 | Integration | inventory         | real MySQL via Testcontainers, Flyway migrations, queries   | yes          |
+| Controller  | booking           | HTTP status codes, JSON, validation with `@WebMvcTest`      | no           |
 
 The integration tests also run 30 bookings in parallel against the same event to check that
 the capacity update never oversells.
@@ -225,7 +226,7 @@ Windows (PowerShell):
 - [x] API gateway with Keycloak JWT security and circuit breaker
 - [x] Flyway migrations, validation, global error handling
 - [x] Unit tests for inventory and booking services
-- [ ] Unit tests for the order service and controller tests
+- [x] Unit tests for the order service and controller tests
 - [ ] Dockerfiles for all services
 - [x] CI pipeline with GitHub Actions
 - [x] Integration tests with Testcontainers
