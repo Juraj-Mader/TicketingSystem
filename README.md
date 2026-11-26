@@ -1,5 +1,5 @@
 # Ticketing System
-
+![CI](https://github.com/Juraj-Mader/TicketingSystem/actions/workflows/ci.yml/badge.svg)
 Backend for booking event tickets, split into Spring Boot microservices. I built it to practice
 service-to-service communication with REST and Kafka, securing an API gateway with Keycloak, and
 running the infrastructure with Docker Compose.
@@ -227,5 +227,5 @@ Windows (PowerShell):
 - [x] Unit tests for inventory and booking services
 - [ ] Unit tests for the order service and controller tests
 - [ ] Dockerfiles for all services
-- [ ] CI pipeline with GitHub Actions
+- [x] CI pipeline with GitHub Actions
 - [x] Integration tests with Testcontainers
